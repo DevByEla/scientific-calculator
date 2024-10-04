@@ -1,10 +1,12 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     console.log("Document is ready");
-    const display = document.getElementById('calc-display');
+    const currentInputDisplay = document.getElementById('current-input');  // Display for current value
+    const prevAnswerDisplay = document.getElementById('prev-answer');  // Display for previous answer
     const buttons = document.getElementsByClassName('btn');
     const clearButton = document.getElementById('btn-clear');  // Target the AC/CE button
-   
+
     let currentValue = "";
+    let lastAnswer = 0;  // To store the result of the last computation
     let isExponentMode = false;
     let pressTimer;  // For tracking long press
 
@@ -26,12 +28,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
         try {
             const result = eval(convertedValue);
-            currentValue = result.toString(); 
-            display.value = currentValue;
+            lastAnswer = result.toString();  // Store the result
+
+            // Update the displays
+            prevAnswerDisplay.innerText = currentValue + " =";  // Show the full equation
+            currentInputDisplay.innerText = lastAnswer;  // Show only the result
+            currentValue = lastAnswer;  // Set currentValue to the result for next operations
+
         } catch (error) {
             console.error(error);
             currentValue = "ERROR";
-            display.value = currentValue;
+            currentInputDisplay.innerText = currentValue;
         }
     }
 
@@ -55,36 +62,37 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Event listener for AC/CE button functionality
-    clearButton.addEventListener('mousedown', function() {
+    clearButton.addEventListener('mousedown', function () {
         // Start the timer when the button is pressed
-        pressTimer = setTimeout(function() {
+        pressTimer = setTimeout(function () {
             // If held for long enough, clear everything (AC)
-            currentValue = "";  
-            display.value = currentValue;
+            currentValue = "";
+            currentInputDisplay.innerText = currentValue;
+            prevAnswerDisplay.innerText = "ANS = " + lastAnswer;  // Reset to show last answer
             updateClearButton();
         }, 500);  // Set the threshold for a long press (500ms)
     });
 
-    clearButton.addEventListener('mouseup', function() {
+    clearButton.addEventListener('mouseup', function () {
         clearTimeout(pressTimer);  // Clear the long press timer
     });
 
-    clearButton.addEventListener('mouseleave', function() {
+    clearButton.addEventListener('mouseleave', function () {
         clearTimeout(pressTimer);  // Also clear if the user moves away from the button
     });
 
-    clearButton.addEventListener('click', function() {
+    clearButton.addEventListener('click', function () {
         // If the button was not held long enough for an "AC", perform the "CE" action
         if (clearButton.innerText === "CE") {
             currentValue = currentValue.slice(0, -1); // Remove the last character
-            display.value = currentValue;
-            updateClearButton(); // Switch back to AC if display is empty
+            currentInputDisplay.innerText = currentValue;
+            updateClearButton();  // Switch back to AC if display is empty
         }
     });
 
     for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const value = button.innerText;
 
             // Skip adding "AC" or "CE" to the display
@@ -99,44 +107,43 @@ document.addEventListener("DOMContentLoaded", function() {
                         currentValue = Math.pow(parseFloat(base), parseFloat(exponent)).toString();
                         isExponentMode = false;
                     } else {
-                        evaluateResult();
+                        evaluateResult();  // Calculate and display results
                     }
-                    display.value = currentValue;
                 } else if (value === "x!") {
                     const num = parseInt(currentValue);
                     currentValue = factorial(num).toString();
-                    display.value = currentValue;
                 } else if (value === "x²") {
                     currentValue = Math.pow(parseFloat(currentValue), 2).toString();
-                    display.value = currentValue;
                 } else if (value === "xʸ") {
                     currentValue += "^";
                     isExponentMode = true;
-                } else if (isExponentMode) {
-                    currentValue += value;
-                    display.value = currentValue;
                 } else {
                     currentValue += value;
-                    display.value = currentValue;
                 }
 
+                // Update the current input display
+                currentInputDisplay.innerText = currentValue;
                 updateClearButton();  // Check whether to show "AC" or "CE"
             } catch (error) {
                 console.error(error);
                 currentValue = "ERROR";
-                display.value = currentValue;
+                currentInputDisplay.innerText = currentValue;
             }
         });
     }
 
     // Toggle between 123 and fx operations
-    document.getElementById('btn-123').addEventListener('click', function() {
+    document.getElementById('btn-123').addEventListener('click', function () {
         document.getElementById('simple-ops').classList.remove('hidden');
         document.getElementById('advanced-ops').classList.add('hidden');
     });
 
-    document.getElementById('btn-fx').addEventListener('click', function() {
+    document.getElementById('btn-fx').addEventListener('click', function () {
         document.getElementById('advanced-ops').classList.remove('hidden');
         document.getElementById('simple-ops').classList.add('hidden');
     });
+
+    // Initialize with ANS = 0
+    prevAnswerDisplay.innerText = "ANS = 0";
+    currentInputDisplay.innerText = "0";  // Default display value
 });

@@ -18,6 +18,18 @@
         .text-center{
             font-family: 'Roboto', sans-serif;
         }
+        .small-text {
+    font-size: 12px;
+    text-align: right;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.large-text {
+    font-size: 28px;
+    text-align: right;
+}
+
     </style>
 </head>
 <body>
@@ -27,7 +39,10 @@
             <div class="col-12 offset-md-3 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <input id="calc-display" readonly class="form-control form-control-lg text-end" type="text" aria-label=".form-control-lg example">
+                        <div id="calc-display">
+                            <div id="prev-answer" class="small-text">ANS = 0</div>
+                            <div id="current-input" class="large-text">0</div>
+                        </div>
                         
                         <!-- Simple Operations Buttons (123) -->
                         <div id="simple-ops">
