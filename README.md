@@ -24,7 +24,7 @@ This project is a **JavaScript-based scientific calculator** that provides both 
 4. Press "=" to evaluate the entered expression.
 5. Long-press the "AC/CE" button to reset the calculator or short-press to clear the last entry.
 
-##Note
+## Note
 
 - For some operations, such as sine, cosine, or logarithms, the number needs to be placed between parentheses. For example, to calculate the sine of 5, input sin(5).
 
