@@ -41,8 +41,11 @@ document.addEventListener("DOMContentLoaded", function () {
             prevAnswerDisplay.innerText = currentValue + " =";  // Show the full equation
             currentInputDisplay.innerText = lastAnswer;  // Show only the result
             currentValue = lastAnswer;  // Set currentValue to the result for next operations
-// Store the result in the history
-history.push(originalExpression + " = " + lastAnswer);
+
+
+// Store the result in the history with date and time
+const dateTime = getCurrentDateTime(); // Get the current date and time
+history.push(`${dateTime} - ${originalExpression} = ${lastAnswer}`); // Format: "MM/DD/YYYY, HH:MM:SS - Expression = Result"
 updateHistoryDisplay();
 
         } catch (error) {
@@ -70,6 +73,13 @@ updateHistoryDisplay();
         // Toggle visibility of the history display
         historyDisplay.classList.toggle('hidden');
     });
+
+    function getCurrentDateTime() {
+        const now = new Date();
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        return now.toLocaleString(undefined, options); // This will give you a localized date and time string
+    }
+    
 
 
 
