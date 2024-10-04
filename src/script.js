@@ -4,15 +4,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const prevAnswerDisplay = document.getElementById('prev-answer');  // Display for previous answer
     const buttons = document.getElementsByClassName('btn');
     const clearButton = document.getElementById('btn-clear');  // Target the AC/CE button
+    const historyDisplay = document.getElementById('history-display'); // History display section
+    const historyList = document.getElementById('history-list'); // List to display history
 
     let currentValue = "";
     let lastAnswer = 0;  // To store the result of the last computation
     let isExponentMode = false;
     let pressTimer;  // For tracking long press
+    let history = []; // Array to store history of calculations
 
     // Function to evaluate the current expression
     function evaluateResult() {
         console.log('current value: ', currentValue);
+         // Store the original expression before evaluating
+         const originalExpression = currentValue;
+
+
         const convertedValue = currentValue
             .replace("×", "*")
             .replace("÷", "/")
@@ -34,6 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
             prevAnswerDisplay.innerText = currentValue + " =";  // Show the full equation
             currentInputDisplay.innerText = lastAnswer;  // Show only the result
             currentValue = lastAnswer;  // Set currentValue to the result for next operations
+// Store the result in the history
+history.push(originalExpression + " = " + lastAnswer);
+updateHistoryDisplay();
 
         } catch (error) {
             console.error(error);
@@ -41,6 +51,27 @@ document.addEventListener("DOMContentLoaded", function () {
             currentInputDisplay.innerText = currentValue;
         }
     }
+
+        // Function to update history display
+        function updateHistoryDisplay() {
+            // Clear the existing history list
+            historyList.innerHTML = ""; // Clear existing list items
+    
+            // Populate the history list
+            history.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item; // Set the text for the list item
+                historyList.appendChild(li); // Append the list item to the history list
+            });
+        }
+
+         // Event listener for the History button
+    document.getElementById('btn-history').addEventListener('click', function() {
+        // Toggle visibility of the history display
+        historyDisplay.classList.toggle('hidden');
+    });
+
+
 
     // Function to calculate factorial
     function factorial(n) {
@@ -96,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const value = button.innerText;
 
             // Skip adding "AC" or "CE" to the display
-            if (value === "AC" || value === "CE" || value === "123" || value === "fx") {
+            if (value === "AC" || value === "CE" || value === "123" || value === "fx" || value === "History") {
                 return;
             }
 

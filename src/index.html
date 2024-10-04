@@ -16,19 +16,25 @@
             display: none;
         }
         .text-center{
-            font-family: 'Roboto', sans-serif;
+            font-family: "Times New Roman", Times, serif;
+            
         }
         .small-text {
     font-size: 12px;
     text-align: right;
     color: #888;
-    margin-bottom: 5px;
+margin-bottom: 5px;
 }
 
 .large-text {
     font-size: 28px;
-    text-align: right;
+    text-align: right;  
 }
+#history-display {
+            border: 2px solid #ccc;  /* Adjust the border color and width as needed */
+            border-radius: 5px;     /* Change the value to adjust the roundness */
+            padding: 10px;           /* Optional: Adds padding inside the div */
+        }
 
     </style>
 </head>
@@ -162,10 +168,18 @@
                         </div>
 
                         <!-- Toggle Buttons -->
-                        <div class="btn-group-toggle">
-                            <button id="btn-123" type="button" class="btn btn-secondary w-25 mt-2 border">123</button>
-                            <button id="btn-fx" type="button" class="btn btn-secondary w-25 mt-2 border">fx</button>
-                        </div>
+<div class="btn-group-toggle">
+    <button id="btn-123" type="button" class="btn btn-secondary w-25 mt-2 border">123</button>
+    <button id="btn-fx" type="button" class="btn btn-secondary w-25 mt-2 border">fx</button>
+    <button id="btn-history" type="button" class="btn btn-secondary w-25 mt-2 border">History</button>
+</div>
+
+<!-- History Display (Initially Hidden) -->
+<div id="history-display" class="hidden mt-3 border">
+    <h3 style = "font-family:'Times New Roman', Times, serif; font-size: 20px">CALCULATION HISTORY</h3>
+    <ul id="history-list"></ul>
+</div>
+
                     </div>
                 </div>
             </div>
